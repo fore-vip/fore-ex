@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建活动 - 前凌智选</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #fff;
+            padding: 16px;
+            width: 425px;
+            min-height: 780px;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 500;
+            font-size: 13px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #fb7701;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .datetime-row {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .datetime-row .form-group {
+            flex: 1;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background: #333;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: none;
+            font-size: 13px;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .help-text {
+            font-size: 11px;
+            color: #999;
+            margin-top: 4px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #fb7701;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .header img {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .header img:hover {
+            opacity: 0.8;
+        }
+        
+        .header a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://fore.vip" target="_blank">
+            <img src="icon.png" alt="前凌智选">
+        </a>
+        <a href="https://fore.vip" target="_blank">
+            <h1>创建活动</h1>
+        </a>
+    </div>
+    
+    <div id="message" class="message"></div>
+    
+    <form id="activityForm">
+        <div class="form-group">
+            <label for="content">活动标题 *</label>
+            <textarea id="content" name="content" required placeholder="请输入活动标题（至少 2 个字符）"></textarea>
+        </div>
+        
+        <div class="datetime-row">
+            <div class="form-group">
+                <label for="start_time">开始时间 *</label>
+                <input type="datetime-local" id="start_time" name="start_time" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="end_time">结束时间</label>
+                <input type="datetime-local" id="end_time" name="end_time">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="address">活动地址 *</label>
+            <input type="text" id="address" name="address" required placeholder="请输入活动详细地址">
+        </div>
+        
+        <div class="form-group">
+            <label for="wx">联系方式（微信）*</label>
+            <input type="text" id="wx" name="wx" required placeholder="请输入微信或其他联系方式">
+        </div>
+        
+        <div class="form-group">
+            <label for="range">门票价格（元）</label>
+            <input type="number" id="range" name="range" min="0" step="0.01" value="0" placeholder="0 表示免费">
+            <div class="help-text">输入 0 表示免费活动</div>
+        </div>
+        
+        <button type="submit" class="btn" id="submitBtn">创建活动</button>
+    </form>
+    
+    <div class="loading" id="loading"></div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>

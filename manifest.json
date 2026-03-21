@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "前凌智选",
+  "version": "1.1",
+  "description": "跨境一站式工具 - 活动发布",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.fore.vip/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "前凌智选 - 创建活动",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "h5/*",
+        "activity.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

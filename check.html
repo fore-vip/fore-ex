@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>插件检查</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #fff; }
+        .check { padding: 10px; margin: 10px 0; border-left: 4px solid #ccc; }
+        .ok { border-color: #28a745; background: #d4edda; }
+        .error { border-color: #dc3545; background: #f8d7da; }
+        .warn { border-color: #ffc107; background: #fff3cd; }
+    </style>
+</head>
+<body>
+    <h1>Chrome 插件文件检查</h1>
+    <div id="checks"></div>
+    
+    <script>
+        const checks = [];
+        
+        // 检查 manifest.json
+        fetch('manifest.json')
+            .then(r => r.json())
+            .then(m => {
+                checks.push('<div class="check ok">✅ manifest.json 格式正确</div>');
+                checks.push('<div class="check">📦 版本：' + m.version + '</div>');
+                checks.push('<div class="check">📄 Popup: ' + m.action.default_popup + '</div>');
+                checks.push('<div class="check">🔧 Manifest V' + m.manifest_version + '</div>');
+                
+                // 检查 popup.html
+                fetch(m.action.default_popup)
+                    .then(r => {
+                        if (r.ok) {
+                            checks.push('<div class="check ok">✅ ' + m.action.default_popup + ' 存在</div>');
+                        } else {
+                            checks.push('<div class="check error">❌ ' + m.action.default_popup + ' 不存在</div>');
+                        }
+                    })
+                    .catch(e => {
+                        checks.push('<div class="check error">❌ ' + m.action.default_popup + ' 读取失败：' + e + '</div>');
+                    })
+                    .finally(() => {
+                        document.getElementById('checks').innerHTML = checks.join('');
+                    });
+            })
+            .catch(e => {
+                checks.push('<div class="check error">❌ manifest.json 读取失败：' + e + '</div>');
+                document.getElementById('checks').innerHTML = checks.join('');
+            });
+    </script>
+</body>
+</html>
