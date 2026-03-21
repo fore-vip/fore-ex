@@ -29,6 +29,20 @@
 
 ---
 
+## 📚 相关文档
+
+### MCP 技能文档
+
+- **activity-create 技能**: https://github.com/fore-vip/skills/tree/main/activity-create
+- **技能安装指引**: [INSTALL.md](https://github.com/fore-vip/skills/blob/main/activity-create/INSTALL.md)
+- **Installation Guide (EN)**: [INSTALL_en.md](https://github.com/fore-vip/skills/blob/main/activity-create/INSTALL_en.md)
+
+### 项目文档
+
+- **前凌智选官网**: https://fore.vip
+- **项目文档库**: https://doc.fore.vip
+
+
 ## 🚀 安装教程
 
 ### 方式一：开发者模式安装（推荐）
