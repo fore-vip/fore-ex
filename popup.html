@@ -19,53 +19,95 @@
             min-height: 600px;
         }
         
-        /* Header - 黑白灰主题 */
+        /* Header - 紧凑布局 */
         .header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 12px;
             padding: 12px 16px;
-            background: #1a1a1a;
-            color: #ffffff;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid #e0e0e0;
         }
         
-        .header-left {
+        /* 搜索框 */
+        .search-box {
+            flex: 1;
             display: flex;
             align-items: center;
-            gap: 8px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0 12px;
+            transition: all 0.3s;
         }
         
-        .header img {
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
+        .search-box:focus-within {
+            border-color: #1a1a1a;
+            background: #ffffff;
         }
         
-        .header h1 {
+        .search-icon {
+            color: #999999;
             font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
+            margin-right: 8px;
         }
         
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            font-size: 13px;
+            color: #333333;
+            outline: none;
+        }
+        
+        .search-input::placeholder {
+            color: #999999;
+        }
+        
+        .search-btn-inline {
+            background: transparent;
+            border: none;
+            color: #1a1a1a;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .search-btn-inline:hover {
+            background: #e0e0e0;
+        }
+        
+        /* 发布按钮 - Logo 样式 */
         .publish-btn {
             position: relative;
             cursor: pointer;
-            padding: 6px 12px;
-            background: #333333;
-            color: #ffffff;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+            border-radius: 8px;
             transition: background 0.3s;
-            border: 1px solid #4a4a4a;
+            flex-shrink: 0;
         }
         
         .publish-btn:hover {
-            background: #4a4a4a;
+            background: #333333;
+        }
+        
+        .publish-btn .logo {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
         }
         
         .publish-menu {
@@ -75,7 +117,7 @@
             right: 0;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             min-width: 160px;
             margin-top: 8px;
             overflow: hidden;
@@ -94,6 +136,7 @@
             text-decoration: none;
             transition: background 0.2s;
             border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
         }
         
         .publish-menu-item:last-child {
@@ -106,63 +149,13 @@
         
         .publish-menu-item .icon {
             margin-right: 8px;
-        }
-        
-        /* Search Bar - 黑白灰主题 */
-        .search-container {
-            padding: 12px 16px;
-            border-bottom: 1px solid #e0e0e0;
-            background: #fafafa;
-        }
-        
-        .search-box {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .search-input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid #d0d0d0;
-            border-radius: 6px;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.3s;
-            background: #ffffff;
-            color: #333333;
-        }
-        
-        .search-input:focus {
-            border-color: #1a1a1a;
-        }
-        
-        .search-input::placeholder {
-            color: #999999;
-        }
-        
-        .search-btn {
-            padding: 10px 20px;
-            background: #1a1a1a;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .search-btn:hover {
-            background: #333333;
-        }
-        
-        .search-btn:active {
-            background: #000000;
+            font-size: 14px;
         }
         
         /* Product List */
         .product-list {
             padding: 16px;
-            max-height: calc(600px - 140px);
+            max-height: calc(600px - 88px);
             overflow-y: auto;
             background: #ffffff;
         }
@@ -317,16 +310,18 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header - 紧凑布局 -->
     <div class="header">
-        <div class="header-left">
-            <a href="https://fore.vip" target="_blank">
-                <img src="icon.png" alt="前凌智选">
-            </a>
-            <h1>前凌智选</h1>
+        <!-- 搜索框 -->
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索产品...">
+            <button class="search-btn-inline" id="searchBtn">搜索</button>
         </div>
-        <div class="publish-btn" id="publishBtn">
-            发布 ▼
+        
+        <!-- 发布按钮 - Logo 样式 -->
+        <div class="publish-btn" id="publishBtn" title="发布">
+            <span class="logo">+</span>
             <div class="publish-menu" id="publishMenu">
                 <a href="#" class="publish-menu-item" id="publishProduct">
                     <span class="icon">📦</span>发布产品
@@ -334,15 +329,10 @@
                 <a href="#" class="publish-menu-item" id="publishActivity">
                     <span class="icon">📅</span>发布活动
                 </a>
+                <a href="#" class="publish-menu-item" id="aboutLink">
+                    <span class="icon">ℹ️</span>关于
+                </a>
             </div>
-        </div>
-    </div>
-    
-    <!-- Search Bar -->
-    <div class="search-container">
-        <div class="search-box">
-            <input type="text" class="search-input" id="searchInput" placeholder="搜索产品（按标签）...">
-            <button class="search-btn" id="searchBtn">搜索</button>
         </div>
     </div>
     

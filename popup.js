@@ -1,17 +1,13 @@
 /**
- * 前凌智选 - Chrome 浏览器插件
- * popup.js - 产品搜索首页
+ * 前凌智选 - Chrome 浏览器插件 v2
+ * popup.js - 产品搜索首页（优化布局）
  * 
- * 架构说明：
- * =============
- * 1. 首页变更为产品查询
- * 2. 右上角发布菜单：发布产品（跳转网页）、发布活动（次级页面）
- * 3. 搜索框支持按标签搜索
- * 4. 列表展示 mcp/query_kl 的结果
- * 
- * MCP 端点：
- * =============
- * - POST https://api.fore.vip/mcp/query_kl - 查询产品
+ * 优化内容：
+ * 1. 搜索框与发布按钮并排
+ * 2. 搜索按钮内联到输入框
+ * 3. 去掉 logo 和标题，腾出空间给搜索框
+ * 4. 发布按钮替换为 Logo（+ 号）
+ * 5. 下拉菜单增加"关于"选项
  */
 
 // MCP 端点
@@ -39,6 +35,7 @@ function initPublishMenu() {
     const publishMenu = document.getElementById('publishMenu');
     const publishProduct = document.getElementById('publishProduct');
     const publishActivity = document.getElementById('publishActivity');
+    const aboutLink = document.getElementById('aboutLink');
     
     // 切换菜单显示
     publishBtn.addEventListener('click', function(e) {
@@ -61,6 +58,12 @@ function initPublishMenu() {
     publishActivity.addEventListener('click', function(e) {
         e.preventDefault();
         window.open('activity.html', '_blank');
+    });
+    
+    // 关于 - 跳转文档
+    aboutLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.open('https://doc.fore.vip', '_blank');
     });
 }
 
@@ -185,7 +188,7 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    // 点击产品卡片跳转到详情页 - 修正链接
+    // 点击产品卡片跳转到详情页
     card.addEventListener('click', function() {
         window.open(`https://fore.vip/p?id=${product.id}`, '_blank');
     });
