@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>创建活动 - 前凌智选</title>
+    <title>前凌智选 - 产品搜索</title>
     <style>
         * {
             margin: 0;
@@ -14,123 +14,213 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: #fff;
-            padding: 16px;
+            padding: 0;
             width: 425px;
-            min-height: 780px;
+            min-height: 600px;
         }
         
-        h1 {
-            color: #333;
-            font-size: 18px;
-            margin: 0;
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #fb7701;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .form-group {
-            margin-bottom: 16px;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        label {
-            display: block;
-            margin-bottom: 6px;
-            color: #555;
-            font-weight: 500;
+        .header img {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+        
+        .header h1 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .publish-btn {
+            position: relative;
+            cursor: pointer;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
             font-size: 13px;
+            font-weight: 500;
+            transition: background 0.3s;
         }
         
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 10px;
+        .publish-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .publish-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 160px;
+            margin-top: 8px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        
+        .publish-menu.show {
+            display: block;
+        }
+        
+        .publish-menu-item {
+            display: block;
+            padding: 12px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .publish-menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .publish-menu-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .publish-menu-item .icon {
+            margin-right: 8px;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 10px 14px;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 13px;
+            outline: none;
             transition: border-color 0.3s;
         }
         
-        input:focus,
-        textarea:focus {
-            outline: none;
+        .search-input:focus {
             border-color: #fb7701;
         }
         
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        .datetime-row {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .datetime-row .form-group {
-            flex: 1;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #000;
+        .search-btn {
+            padding: 10px 20px;
+            background: #fb7701;
             color: white;
             border: none;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: background 0.3s;
-            width: 100%;
         }
         
-        .btn:hover {
-            background: #333;
+        .search-btn:hover {
+            background: #e56a00;
         }
         
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        /* Product List */
+        .product-list {
+            padding: 16px;
+            max-height: calc(600px - 140px);
+            overflow-y: auto;
         }
         
-        .message {
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 16px;
-            display: none;
-            font-size: 13px;
+        .product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            transition: box-shadow 0.3s;
+            cursor: pointer;
         }
         
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .product-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .product-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
         }
         
-        .help-text {
+        .product-content {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 11px;
             color: #999;
-            margin-top: 4px;
         }
         
+        .product-tag {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .product-hot {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Loading */
         .loading {
-            display: none;
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 13px;
         }
         
         .loading::after {
             content: '';
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 24px;
+            height: 24px;
             border: 3px solid #f3f3f3;
             border-top: 3px solid #fb7701;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            margin-left: 8px;
+            vertical-align: middle;
         }
         
         @keyframes spin {
@@ -138,81 +228,95 @@
             100% { transform: rotate(360deg); }
         }
         
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 16px;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 13px;
         }
         
-        .header img {
-            width: 36px;
-            height: 36px;
+        /* Error */
+        .error-message {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 16px;
+            font-size: 13px;
+            display: none;
+        }
+        
+        /* Load More */
+        .load-more {
+            text-align: center;
+            padding: 16px;
+        }
+        
+        .load-more-btn {
+            padding: 10px 24px;
+            background: #fff;
+            color: #fb7701;
+            border: 1px solid #fb7701;
+            border-radius: 6px;
+            font-size: 13px;
             cursor: pointer;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
         }
         
-        .header img:hover {
-            opacity: 0.8;
+        .load-more-btn:hover {
+            background: #fb7701;
+            color: white;
         }
         
-        .header a {
-            text-decoration: none;
-            color: inherit;
+        .load-more-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="header">
-        <a href="https://fore.vip" target="_blank">
-            <img src="icon.png" alt="前凌智选">
-        </a>
-        <a href="https://fore.vip" target="_blank">
-            <h1>创建活动</h1>
-        </a>
+        <div class="header-left">
+            <a href="https://fore.vip" target="_blank">
+                <img src="icon.png" alt="前凌智选">
+            </a>
+            <h1>前凌智选</h1>
+        </div>
+        <div class="publish-btn" id="publishBtn">
+            发布 ▼
+            <div class="publish-menu" id="publishMenu">
+                <a href="#" class="publish-menu-item" id="publishProduct">
+                    <span class="icon">📦</span>发布产品
+                </a>
+                <a href="#" class="publish-menu-item" id="publishActivity">
+                    <span class="icon">📅</span>发布活动
+                </a>
+            </div>
+        </div>
     </div>
     
-    <div id="message" class="message"></div>
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索产品（按标签）...">
+            <button class="search-btn" id="searchBtn">搜索</button>
+        </div>
+    </div>
     
-    <form id="activityForm">
-        <div class="form-group">
-            <label for="content">活动标题 *</label>
-            <textarea id="content" name="content" required placeholder="请输入活动标题（至少 2 个字符）"></textarea>
-        </div>
-        
-        <div class="datetime-row">
-            <div class="form-group">
-                <label for="start_time">开始时间 *</label>
-                <input type="datetime-local" id="start_time" name="start_time" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="end_time">结束时间</label>
-                <input type="datetime-local" id="end_time" name="end_time">
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label for="address">活动地址 *</label>
-            <input type="text" id="address" name="address" required placeholder="请输入活动详细地址">
-        </div>
-        
-        <div class="form-group">
-            <label for="wx">联系方式（微信）*</label>
-            <input type="text" id="wx" name="wx" required placeholder="请输入微信或其他联系方式">
-        </div>
-        
-        <div class="form-group">
-            <label for="range">门票价格（元）</label>
-            <input type="number" id="range" name="range" min="0" step="0.01" value="0" placeholder="0 表示免费">
-            <div class="help-text">输入 0 表示免费活动</div>
-        </div>
-        
-        <button type="submit" class="btn" id="submitBtn">创建活动</button>
-    </form>
+    <!-- Error Message -->
+    <div class="error-message" id="errorMessage"></div>
     
-    <div class="loading" id="loading"></div>
+    <!-- Product List -->
+    <div class="product-list" id="productList">
+        <div class="loading">加载中...</div>
+    </div>
+    
+    <!-- Load More -->
+    <div class="load-more" id="loadMore" style="display: none;">
+        <button class="load-more-btn" id="loadMoreBtn">加载更多</button>
+    </div>
     
     <script src="popup.js"></script>
 </body>
