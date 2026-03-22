@@ -47,6 +47,7 @@
         .search-box:focus-within {
             border-color: #1a1a1a;
             background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
         .search-icon {
@@ -85,29 +86,38 @@
             background: #e0e0e0;
         }
         
-        /* 发布按钮 - Logo 样式 */
+        /* 发布按钮 - Logo 样式（焦点化） */
         .publish-btn {
             position: relative;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1a1a1a;
-            border-radius: 8px;
-            transition: background 0.3s;
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            border-radius: 10px;
+            transition: all 0.3s;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         
         .publish-btn:hover {
-            background: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+        }
+        
+        .publish-btn:active {
+            transform: translateY(0);
         }
         
         .publish-btn .logo {
             color: #ffffff;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
+            font-family: Georgia, serif;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
         
         .publish-menu {
@@ -117,7 +127,7 @@
             right: 0;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
             min-width: 160px;
             margin-top: 8px;
             overflow: hidden;
@@ -127,6 +137,18 @@
         
         .publish-menu.show {
             display: block;
+            animation: menuSlide 0.2s ease-out;
+        }
+        
+        @keyframes menuSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .publish-menu-item {
@@ -319,9 +341,9 @@
             <button class="search-btn-inline" id="searchBtn">搜索</button>
         </div>
         
-        <!-- 发布按钮 - Logo 样式 -->
+        <!-- 发布按钮 - Logo 样式（焦点化） -->
         <div class="publish-btn" id="publishBtn" title="发布">
-            <span class="logo">+</span>
+            <span class="logo">智</span>
             <div class="publish-menu" id="publishMenu">
                 <a href="#" class="publish-menu-item" id="publishProduct">
                     <span class="icon">📦</span>发布产品
