@@ -22,6 +22,7 @@ const PAGE_SIZE = 20;
 let currentSkip = 0;
 let currentTag = '';
 let hasMore = false;
+let isLoading = false;
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -92,6 +93,10 @@ function initSearch() {
  * @param {boolean} clear - 是否清空列表（搜索时使用）
  */
 async function loadProducts(clear = false) {
+    // 防止重复加载
+    if (isLoading) return;
+    isLoading = true;
+    
     const productList = document.getElementById('productList');
     const loadMore = document.getElementById('loadMore');
     const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -152,14 +157,21 @@ async function loadProducts(clear = false) {
         } else {
             showError('加载失败：' + (result.message || '未知错误'));
             if (clear) {
-                productList.innerHTML = '';
+                productList.innerHTML = '<div class="empty-state">加载失败</div>';
             }
         }
     } catch (error) {
         console.error('加载产品失败:', error);
         showError('网络错误：' + error.message);
         if (clear) {
-            productList.innerHTML = '';
+            productList.innerHTML = '<div class="empty-state">加载失败</div>';
+        }
+    } finally {
+        // 确保加载状态被隐藏
+        isLoading = false;
+        const loadingEl = productList.querySelector('.loading');
+        if (loadingEl) {
+            loadingEl.style.display = 'none';
         }
     }
 }
@@ -173,9 +185,9 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     
-    // 点击产品卡片跳转到详情页
+    // 点击产品卡片跳转到详情页 - 修正链接
     card.addEventListener('click', function() {
-        window.open(`https://fore.vip/s?id=${product.id}`, '_blank');
+        window.open(`https://fore.vip/p?id=${product.id}`, '_blank');
     });
     
     const hotIcon = product.hot >= 1000000 ? '🔥' : (product.hot >= 10000 ? '⭐' : '📌');
@@ -238,7 +250,7 @@ function formatHot(hot) {
 document.addEventListener('DOMContentLoaded', function() {
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     loadMoreBtn.addEventListener('click', function() {
-        if (hasMore) {
+        if (hasMore && !isLoading) {
             loadMoreBtn.disabled = true;
             loadProducts(false);
         }
