@@ -1,13 +1,12 @@
 /**
- * 前凌智选 - Chrome 浏览器插件 v2
- * popup.js - 产品搜索首页（优化布局）
+ * 前凌智选 - Chrome 浏览器插件 v5
+ * popup.js - 产品搜索首页（自动加载优化）
  * 
  * 优化内容：
- * 1. 搜索框与发布按钮并排
- * 2. 搜索按钮内联到输入框
- * 3. 去掉 logo 和标题，腾出空间给搜索框
- * 4. 发布按钮替换为 Logo（+ 号）
- * 5. 下拉菜单增加"关于"选项
+ * 1. 搜索按钮上下间距微调（padding: 9px）
+ * 2. 发布按钮使用 SVG icon 替代文字
+ * 3. 移除加载更多按钮，改为底部自动加载
+ * 4. 添加加载指示器和"没有更多"提示
  */
 
 // MCP 端点
@@ -24,6 +23,7 @@ let isLoading = false;
 document.addEventListener('DOMContentLoaded', function() {
     initPublishMenu();
     initSearch();
+    initAutoLoad();
     loadProducts();
 });
 
@@ -78,6 +78,7 @@ function initSearch() {
     searchBtn.addEventListener('click', function() {
         currentTag = searchInput.value.trim();
         currentSkip = 0;
+        hasMore = false;
         loadProducts(true);
     });
     
@@ -86,7 +87,27 @@ function initSearch() {
         if (e.key === 'Enter') {
             currentTag = searchInput.value.trim();
             currentSkip = 0;
+            hasMore = false;
             loadProducts(true);
+        }
+    });
+}
+
+/**
+ * 初始化自动加载
+ */
+function initAutoLoad() {
+    const productList = document.getElementById('productList');
+    
+    // 监听滚动事件
+    productList.addEventListener('scroll', function() {
+        const scrollTop = productList.scrollTop;
+        const scrollHeight = productList.scrollHeight;
+        const clientHeight = productList.clientHeight;
+        
+        // 距离底部 100px 时触发加载
+        if (scrollTop + clientHeight >= scrollHeight - 100 && hasMore && !isLoading) {
+            loadProducts(false);
         }
     });
 }
@@ -101,14 +122,15 @@ async function loadProducts(clear = false) {
     isLoading = true;
     
     const productList = document.getElementById('productList');
-    const loadMore = document.getElementById('loadMore');
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const autoLoadIndicator = document.getElementById('autoLoadIndicator');
+    const noMore = document.getElementById('noMore');
     const errorMessage = document.getElementById('errorMessage');
     
     // 显示加载状态
     if (clear) {
         productList.innerHTML = '<div class="loading">加载中...</div>';
-        loadMore.style.display = 'none';
+        autoLoadIndicator.classList.remove('show');
+        noMore.classList.remove('show');
         errorMessage.style.display = 'none';
     }
     
@@ -140,7 +162,8 @@ async function loadProducts(clear = false) {
                 if (clear) {
                     productList.innerHTML = '<div class="empty-state">暂无产品</div>';
                 }
-                loadMore.style.display = 'none';
+                autoLoadIndicator.classList.remove('show');
+                noMore.classList.add('show');
                 hasMore = false;
             } else {
                 // 添加产品卡片
@@ -149,19 +172,23 @@ async function loadProducts(clear = false) {
                     productList.appendChild(card);
                 });
                 
-                // 更新加载更多按钮
+                // 更新状态
                 hasMore = result.hasMore;
-                loadMore.style.display = hasMore ? 'block' : 'none';
-                loadMoreBtn.disabled = false;
+                autoLoadIndicator.classList.remove('show');
+                
+                if (!hasMore) {
+                    noMore.classList.add('show');
+                }
+                
+                // 更新 skip
+                currentSkip += result.data.length;
             }
-            
-            // 更新 skip
-            currentSkip += result.data.length;
         } else {
             showError('加载失败：' + (result.message || '未知错误'));
             if (clear) {
                 productList.innerHTML = '<div class="empty-state">加载失败</div>';
             }
+            autoLoadIndicator.classList.remove('show');
         }
     } catch (error) {
         console.error('加载产品失败:', error);
@@ -169,6 +196,7 @@ async function loadProducts(clear = false) {
         if (clear) {
             productList.innerHTML = '<div class="empty-state">加载失败</div>';
         }
+        autoLoadIndicator.classList.remove('show');
     } finally {
         // 确保加载状态被隐藏
         isLoading = false;
@@ -248,14 +276,3 @@ function formatHot(hot) {
         return hot.toString();
     }
 }
-
-// 加载更多
-document.addEventListener('DOMContentLoaded', function() {
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    loadMoreBtn.addEventListener('click', function() {
-        if (hasMore && !isLoading) {
-            loadMoreBtn.disabled = true;
-            loadProducts(false);
-        }
-    });
-});
