@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "前凌智选",
-  "version": "1.1",
+  "version": "1.4",
   "description": "跨境一站式工具 - 活动发布",
   "permissions": [
     "storage"

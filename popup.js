@@ -1,6 +1,6 @@
 /**
  * 前凌智选 Chrome 插件 - popup.js
- * 版本：v1.4.2
+ * 版本：v1.4.4
  * MCP 端点：https://api.fore.vip/mcp/query_kl
  */
 
@@ -43,7 +43,7 @@ function initPublishMenu() {
     
     document.getElementById('publishActivity').addEventListener('click', function(e) {
         e.preventDefault();
-        window.open('activity.html', '_blank');
+        alert('💡 发布产品后可以在产品主页发布活动获取收益！请先发布产品，然后在产品主页创建活动。');
     });
     
     document.getElementById('aboutLink').addEventListener('click', function(e) {
@@ -138,7 +138,7 @@ function createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card';
     card.addEventListener('click', function() {
-        window.open(`https://fore.vip/p?id=${product.id}`, '_blank');
+        window.open(`https://fore.vip/ai/s?id=${product.id}`, '_blank');
     });
     
     const hotIcon = product.hot >= 1000000 ? '🔥' : (product.hot >= 10000 ? '⭐' : '📌');
